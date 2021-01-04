@@ -8,15 +8,67 @@
     android:gravity="center_horizontal|center_vertical"
     tools:context=".MainActivity">
 
+ <EditText
+     android:layout_marginLeft="20dp"
+     android:layout_marginRight="20dp"
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content"
+     android:hint="Name"
+    android:textAlignment="center"
+     android:gravity="center_horizontal"
+     android:id="@+id/edName"/>
+
+ <EditText
+     android:layout_marginLeft="20dp"
+     android:layout_marginRight="20dp"
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content"
+     android:hint="Address"
+     android:textAlignment="center"
+     android:gravity="center_horizontal"
+     android:id="@+id/edaddress"/>
+
+ <EditText
+     android:layout_marginLeft="20dp"
+     android:layout_marginRight="20dp"
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content"
+     android:hint="Job Title"
+     android:textAlignment="center"
+     android:gravity="center_horizontal"
+     android:id="@+id/edjobtitile"/>
+
+ <EditText
+     android:layout_marginLeft="20dp"
+     android:layout_marginRight="20dp"
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content"
+     android:hint="Gender"
+     android:textAlignment="center"
+     android:gravity="center_horizontal"
+     android:id="@+id/edgender"/>
+
  <Button
+     android:layout_marginTop="10dp"
+     android:layout_width="wrap_content"
+     android:layout_height="wrap_content"
+     android:text="Add Data To Firebase"
+     android:background="@drawable/button_effect"
+     android:id="@+id/addData"></Button>
+
+ <Button
+     android:layout_marginTop="20dp"
      android:layout_width="wrap_content"
      android:layout_height="wrap_content"
     android:text="Get Data From Firebase"
+    android:background="@drawable/button_effect"
   android:id="@+id/getData"></Button>
 
  <LinearLayout
+     android:padding="5dp"
      android:layout_width="wrap_content"
      android:layout_height="wrap_content"
+     android:layout_marginTop="30dp"
   android:orientation="horizontal">
  <TextView
      android:layout_width="wrap_content"
@@ -35,6 +87,7 @@
  </LinearLayout>
 
  <LinearLayout
+     android:padding="5dp"
      android:layout_width="wrap_content"
      android:layout_height="wrap_content"
      android:orientation="horizontal">
@@ -54,6 +107,7 @@
       ></TextView>
  </LinearLayout>
  <LinearLayout
+     android:padding="5dp"
      android:layout_width="wrap_content"
      android:layout_height="wrap_content"
      android:orientation="horizontal">
@@ -74,6 +128,7 @@
  </LinearLayout>
 
  <LinearLayout
+     android:padding="5dp"
      android:layout_width="wrap_content"
      android:layout_height="wrap_content"
      android:orientation="horizontal">

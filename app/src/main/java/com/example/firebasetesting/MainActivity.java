@@ -12,30 +12,31 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import org.w3c.dom.Text;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
     TextView name, address, jobtitle, gender;
-    Button getData;
+    Button getData,addData;
+    EditText edName,edAddress,edJobtitle,edGender;
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     DocumentReference ref = db.collection("user").document("DGQ9MzQaCeX3Doy8tvfa");
+    DocumentReference add=db.collection("user").document();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,14 +48,44 @@ public class MainActivity extends AppCompatActivity {
         jobtitle = findViewById(R.id.jobtitle);
         gender = findViewById(R.id.gender);
         getData = findViewById(R.id.getData);
+        addData=findViewById(R.id.addData);
+
+        edName=findViewById(R.id.edName);
+        edAddress=findViewById(R.id.edaddress);
+        edJobtitle=findViewById(R.id.edjobtitile);
+        edGender=findViewById(R.id.edgender);
+
+        addData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String sName=edName.getText().toString().trim();
+                String sAddress=edAddress.getText().toString().trim();
+                String sJobtitle=edJobtitle.getText().toString().trim();
+                String sGender=edGender.getText().toString().trim();
+
+                Map<String, Object> user = new HashMap<>();
+                user.put("Name",sName);
+                user.put("Address", sAddress);
+                user.put("Job Title",sJobtitle);
+                user.put("Gender",sGender);
+
+                add.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+
+                        Toast.makeText(MainActivity.this, "Data Inserted Successfully", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
 
+
+            }
+        });
 
         getDatafromSharedPreference();
 
         refreshing();
-
-
 
         getData.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
 
                 getDatafromSharedPreference();
-                getUserData();
+
                 Toast.makeText(MainActivity.this, "Refreshed", Toast.LENGTH_SHORT).show();
                 refreshing();
 
@@ -113,11 +144,13 @@ public class MainActivity extends AppCompatActivity {
                 connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
 
 
-            ref.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                @Override
-                public void onSuccess(DocumentSnapshot documentSnapshot) {
+            CollectionReference collectionReference=db.collection("user");
 
-                    if(documentSnapshot.exists())
+            collectionReference.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                @Override
+                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+
+                    for(QueryDocumentSnapshot documentSnapshot: queryDocumentSnapshots)
                     {
                         String sName=documentSnapshot.getString("Name");
                         name.setText(sName);
@@ -143,18 +176,10 @@ public class MainActivity extends AppCompatActivity {
 
 
                     }
-                    else
-                    {
-                        Toast.makeText(MainActivity.this, "Not Exists", Toast.LENGTH_SHORT).show();
-                    }
-
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
 
                 }
             });
+
 
         }
         else
@@ -162,8 +187,6 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(MainActivity.this, "Make sure your internet is on", Toast.LENGTH_SHORT).show();
         }
 
-
     }
-
 
 }
